@@ -8,11 +8,12 @@ def answer_question(context, question):
     return result['answer']
 
 
+
 # Read from a text file
 with open('info.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 
 # Ask for user input
-question = input("Please enter your question: ")
-
-print(answer_question(text, question))
+while True:
+    question = input("Please enter your question: ")
+    print(answer_question(text, question))
