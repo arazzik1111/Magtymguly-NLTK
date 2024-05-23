@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MagtymgulyAI</title>
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://i.ibb.co/CsXDNB4/Screenshot-38.png"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+      body {
+        display: flex;
+      justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+      }
+      h1 {
+        display: inline-block;
+        font-size: 3em;
+        margin: 0;
+        padding: 14px;
+      }
+      h3 {
+        color: black;
+        font-size: 20px;
+        margin-top: 3px;
+        text-align: center;
+      }
+      #chatbox {
+  width: 60%;
+  max-width: 800px;
+  height: 80vh;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+    #userInput {
+        position: fixed; /* Add this line */
+        bottom: 0; /* Add this line */
+        left: 0; /* Add this line */
+        right: 0; /* Add this line */
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+        margin-top: 60px;
+        padding: 10px; /* Add some space around the text */
+        border-radius: 10px; /* Round the corners of the box */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+
+    #sendButton {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+
+    #textInput {
+        width: 90%;
+        border: none;
+        border-bottom: 3px solid black;
+        font-family: monospace;
+        font-size: 17px;
+        padding: 10px; /* Add some space around the text */
+        border-radius: 10px; /* Round the corners of the box */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+      .userText {
+        color: white;
+        font-family: monospace;
+        font-size: 17px;
+        text-align: right;
+        line-height: 30px;
+      }
+      .botText span {
+        padding: 10px;
+        border-radius: 2px;
+      }
+      .userText span {
+        background-color: #808080;
+        padding: 10px;
+        border-radius: 2px;
+      }
+    .botText {
+        color: rgb(3, 3, 3);
+        font-family: monospace;
+        font-size: 17px;
+        text-align: left;
+        line-height: 30px;
+        padding: 10px; /* Add some space around the text */
+        border-radius: 10px; /* Round the corners of the box */
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    }
+      #tidbit {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+      }
+      .boxed {
+        margin-left: auto;
+        margin-right: auto;
+        width: 78%;
+        margin-top: 60px;
+      }
+      .box {
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+    <div style="width: 150px; height: 150px;">
+        <img
+            src="https://i.ibb.co/CsXDNB4/Screenshot-38.png"
+            alt="Banner for image Magtymguly"
+            style="width:100%; height:100%;"
+        />
+    </div>
+    <div>
+        <h1>Magtymguly Q&A ChatBot</h1>
+    </div>
+    </center>
+    <div class="box"></div>
+    <!-- Move the userInput div outside the boxed div -->
+    <div class="boxed">
+      <div id="chatbox">
+        <p class="botText">
+          <span>Hi! Please ask me your question about Magtymguly Pyragy</span>
+        </p>
+      </div>
+    </div>
+    <div id="userInput">
+      <input id="textInput" type="text" name="msg" placeholder="Message" />
+      <button id="sendButton">Send</button>
+      <img id="loading" src="https://i.pinimg.com/originals/3e/80/39/3e8039242e517ee7edc05a4e226e0b80.gif" style="display: none; width: 40px; height: 40px;" />    </div>
+      </div>
+    </div>
+    <script>
+      function getBotResponse() {
+        var rawText = $("#textInput").val();
+        var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+        $("#textInput").val("");
+        $("#chatbox").append(userHtml);
+        scrollChatToBottom();
+        $("#loading").show(); // Show the loading spinner
+        $.get("/get", { msg: rawText }).done(function(data) {
+          var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+          $("#chatbox").append(botHtml);
+          scrollChatToBottom();
+          $("#loading").hide(); // Hide the loading spinner
+        });
+      }
+
+      $("#sendButton").click(function() {
+        getBotResponse();
+      });
+
+      $("#textInput").keypress(function(e) {
+        if (e.which == 13) {
+          getBotResponse();
+        }
+      });
+
+      function scrollChatToBottom() {
+        $("#chatbox").animate({ scrollTop: $("#chatbox")[0].scrollHeight }, "slow");
+      }
+    </script>
+  </body>
+</html>
